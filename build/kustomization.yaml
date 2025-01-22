@@ -6,3 +6,9 @@ resources:
   - service.yaml
   - ingress.yaml
 
+secretGenerator:
+  - name: minio-secret
+    files:
+    - tls.key
+    - tls.crt
+    type: kubernetes.io/tls
