@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+spec:
+  serviceName: minio
+  replicas: 2
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: quay.io/minio/minio:latest
+          imagePullPolicy: "IfNotPresent"
+          args: 
+          - server
+          - http://minio-0.minio.default.svc.cluster.local/data
+          - http://minio-1.minio.default.svc.cluster.local/data          
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1"
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9000
+            - containerPort: 9090
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+  volumeClaimTemplates:            
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi            
