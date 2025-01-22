@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	endpoint := "minio-api-xcigta.apps.sbd01.k8s.etat-de-vaud.ch"
+	endpoint := "minio-api.test"
 	accessKeyID := os.Getenv("MINIO_ACCESS_KEY_ID")
 	secretAccessKey := os.Getenv("MINIO_SECRET_ACCESS_KEY")
 
@@ -64,7 +64,7 @@ func main() {
 		log.Println("File downloaded successfully")
 	*/
 
-	minioClient.FPutObject(context.Background(), "sample", uuid.NewString(), "tmp/nrjmx_linux_2.6.0_noarch.tar.gz", minio.PutObjectOptions{
+	info, err := minioClient.FPutObject(context.Background(), "sample", uuid.NewString(), "tmp/nrjmx_linux_2.6.0_noarch.tar.gz", minio.PutObjectOptions{
 		ContentType: "application/java-archive",
 		UserTags: map[string]string{
 			"application-tag": "miniotest-tag",
@@ -75,8 +75,11 @@ func main() {
 			"domain":      "minio",
 		},
 	})
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	log.Println("File uploaded successfully")
+	log.Println("File uploaded successfully",info.VersionID)
 
 	o, err := minioClient.GetObjectACL(context.Background(), "sample", "0c615b8c-9218-4121-95b1-b78f431853db")
 	if err != nil {
