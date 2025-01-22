@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/google/uuid"
 	"github.com/minio/minio-go/v7"
@@ -10,9 +11,9 @@ import (
 )
 
 func main() {
-	endpoint := "192.168.49.10:9000"
-	accessKeyID := "ZCSuCGOy3GIN8YTxOwXJ"
-	secretAccessKey := "73KUHqDWykOkpELJwWo7PQqyC3ZAn2piAt8f2XkP"
+	endpoint := "minio-api-xcigta.apps.sbd01.k8s.etat-de-vaud.ch"
+	accessKeyID := os.Getenv("MINIO_ACCESS_KEY_ID")
+	secretAccessKey := os.Getenv("MINIO_SECRET_ACCESS_KEY")
 
 	useSSL := false
 
@@ -63,7 +64,7 @@ func main() {
 		log.Println("File downloaded successfully")
 	*/
 
-	minioClient.FPutObject(context.Background(), "sample", uuid.NewString(), "tmp/postgresql-42.7.5.jar", minio.PutObjectOptions{
+	minioClient.FPutObject(context.Background(), "sample", uuid.NewString(), "tmp/nrjmx_linux_2.6.0_noarch.tar.gz", minio.PutObjectOptions{
 		ContentType: "application/java-archive",
 		UserTags: map[string]string{
 			"application-tag": "miniotest-tag",

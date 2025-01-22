@@ -4,7 +4,7 @@ metadata:
   name: minio
 spec:
   serviceName: minio
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: minio
@@ -19,8 +19,11 @@ spec:
           imagePullPolicy: "IfNotPresent"
           args: 
           - server
-          - http://minio-0.minio.default.svc.cluster.local/data
-          - http://minio-1.minio.default.svc.cluster.local/data          
+          - --console-address 
+          - ":9001"
+          - http://minio-0.minio/data
+          - http://minio-1.minio/data          
+          - http://minio-2.minio/data          
           resources:
             limits:
               memory: "1024Mi"
@@ -30,7 +33,7 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 9000
-            - containerPort: 9090
+            - containerPort: 9001
           volumeMounts:
             - name: data
               mountPath: /data

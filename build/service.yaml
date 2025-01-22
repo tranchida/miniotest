@@ -20,24 +20,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio-service
-  labels:
-    app: minio
-spec:
-  selector:
-    app: minio
-  ports:
-    - name: s3
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
-  type: LoadBalancer
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
   name: minio-console-service
 spec:
   selector:
@@ -45,6 +27,6 @@ spec:
   ports:
   - name: console
     protocol: TCP
-    port: 9090
-    targetPort: 44869
-  type: LoadBalancer
+    port: 9001
+    targetPort: 9001
+  type: ClusterIP
