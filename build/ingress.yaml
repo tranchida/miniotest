@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
-  tls:
-  - hosts:
-    - minio-api.test
-    - minio-console.test
-    secretName: minio-secret
+#  tls:
+#  - hosts:
+#    - minio-api.test
+#    - minio-console.test
+#    secretName: minio-secret
   rules:
   - host: minio-api.test
     http:
